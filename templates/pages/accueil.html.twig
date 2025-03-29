@@ -13,7 +13,10 @@
     </p>
     <p>
         Voici les <strong>deux dernières formations</strong> ajoutées au catalogue :
-        <table class="table">
+        <table class="table" aria-describedby="desc-accueil">
+    <caption id="desc-accueil" class="visually-hidden">
+        Dernières formations ajoutées
+    </caption>
             <tr>
                 {% for formation in formations %}
                     <td>
@@ -22,7 +25,7 @@
                                 <!-- emplacement photo -->
                                 {% if formation.picture %}
                                     <a href="{{ path('formations.showone', {id:formation.id}) }}">
-                                    <img src="{{ formation.picture }}" 
+                                    <img src="{{ formation.picture }}" alt="Miniature de la formation {{ formation.title }}"
                                          class="card-img-top" style="width:100%;height:auto;">
                                     </a>    
                                 {% endif %}

@@ -1,0 +1,26 @@
+{{ form_start(form) }}
+
+<div class="mb-3">
+    {{ form_row(form.title) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.description, { 'required': false }) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.publishedAt, { 'attr': {'max': "now"|date('Y-m-d')} }) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.playlist) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.categories, { 'attr': {'multiple': 'multiple'} }) }}
+</div>
+
+<button type="submit" class="btn btn-success">Enregistrer</button>
+<a href="{{ path('admin.formations') }}" class="btn btn-secondary">Annuler</a>
+
+{{ form_end(form) }}

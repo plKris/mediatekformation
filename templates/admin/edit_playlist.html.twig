@@ -1,0 +1,7 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+    <h2>Modifier la playlist : {{ playlist.name }}</h2>
+    {{ include ('_admin.playlist.form.html.twig') }}
+{% endblock %}
+

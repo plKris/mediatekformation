@@ -1,0 +1,6 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+    <h2>Modifier la formation : {{ formation.title }}</h2>
+    {{ include ('_admin.formation.form.html.twig') }}
+{% endblock %}

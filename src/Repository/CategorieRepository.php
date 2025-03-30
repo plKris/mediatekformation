@@ -24,8 +24,10 @@ class CategorieRepository extends ServiceEntityRepository
 
     public function remove(Categorie $entity): void
     {
+        if ($entity->getFormations()->count() === 0) {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
+        }
     }
     
     /**
@@ -42,6 +44,15 @@ class CategorieRepository extends ServiceEntityRepository
                 ->orderBy('c.name', 'ASC') 
                 ->getQuery()
                 ->getResult();    
+    }
+    
+    public function findByName(string $name): ?Categorie
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
     
 }

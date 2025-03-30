@@ -1,0 +1,47 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+    <h2>Gestion des Catégories</h2>
+    
+    <!-- Formulaire d'ajout de catégorie -->
+    <form action="{{ path('admin.categorie.add') }}" method="post" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="name" class="form-control" placeholder="Nouvelle catégorie" required>
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+        {% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+    </form>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for categorie in categories %}
+                <tr>
+                    <td>{{ categorie.name }}</td>
+                    <td>
+                        {% if categorie.formations|length == 0 %}
+                            <a href="{{ path('admin.categorie.delete', {id: categorie.id}) }}" class="btn btn-danger" 
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
+                               Supprimer
+                            </a>
+                        {% else %}
+                            <span class="text-muted">Cette catégorie est liée à des formations et ne peut pas être supprimée.</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

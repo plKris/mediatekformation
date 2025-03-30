@@ -7,9 +7,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Playlist;
+use App\Form\PlaylistType;
 use App\Repository\CategorieRepository;
 use App\Repository\FormationRepository;
 use App\Repository\PlaylistRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +26,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminPlaylistController extends AbstractController {
     
     private const TEMPLATE_PLAYLISTS = 'admin/admin.playlists.html.twig';
-    private const TEMPLATE_PLAYLIST = 'pages/playlist.html.twig';
     
     /**
      * 
@@ -55,7 +57,7 @@ class AdminPlaylistController extends AbstractController {
      * @Route("/playlists", name="playlists")
      * @return Response
      */
-    #[Route('/admin/playlists', name: 'admin.playlists')]
+    #[Route('admin/playlists', name: 'admin.playlists')]
     public function index(): Response{
         $playlists = $this->playlistRepository->findAllOrderByName('ASC');
         $categories = $this->categorieRepository->findAll();
@@ -64,8 +66,47 @@ class AdminPlaylistController extends AbstractController {
             'categories' => $categories            
         ]);
     }
+    
+    #[Route('/admin/playlists/add', name: 'admin.playlists.add')]
+    public function addPlaylist(Request $request, EntityManagerInterface $em): Response {
+            $playlist = new Playlist();
+    $form = $this->createForm(PlaylistType::class, $playlist);
 
-    #[Route('/playlists/tri/{champ}/{ordre}', name: 'playlists.sort')]
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->persist($playlist);
+        $em->flush();
+        return $this->redirectToRoute('admin.playlists');
+    }
+
+    return $this->render('admin/add_playlist.html.twig', [
+        'form' => $form->createView()
+    ]);
+    }
+
+    #[Route('/admin/playlists/edit/{id}', name: 'admin.playlists.edit')]
+    public function editPlaylist(Playlist $playlist, Request $request, EntityManagerInterface $em): Response {
+        $form = $this->createForm(PlaylistType::class, $playlist);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->flush();
+        return $this->redirectToRoute('admin.playlists');
+    }
+    return $this->render('admin/edit_playlist.html.twig', [
+        'form' => $form->createView(),
+        'playlist' => $playlist
+    ]);
+    }
+
+    #[Route('/admin/playlists/delete/{id}', name: 'admin.playlists.delete')]
+    public function deletePlaylist(Playlist $playlist, EntityManagerInterface $em): Response {
+        $em->remove($playlist);
+        $em->flush();
+        return $this->redirectToRoute('admin.playlists');
+    }
+
+    #[Route('/playlists/tri/{champ}/{ordre}', name: 'admin.playlists.sort')]
     public function sort($champ, $ordre): Response{
         switch($champ){
             case "name":
@@ -85,7 +126,7 @@ class AdminPlaylistController extends AbstractController {
         ]);
     }          
 
-    #[Route('/playlists/recherche/{champ}/{table}', name: 'playlists.findallcontain')]
+    #[Route('/admin/playlists/recherche/{champ}/{table}', name: 'admin.playlists.findallcontain')]
     public function findAllContain($champ, Request $request, $table=""): Response{
         $valeur = $request->get("recherche");
         $playlists = $this->playlistRepository->findByContainValue($champ, $valeur, $table);
@@ -111,4 +152,3 @@ class AdminPlaylistController extends AbstractController {
     }  
     
 }
-

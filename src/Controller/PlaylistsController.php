@@ -16,10 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PlaylistsController extends AbstractController {
     
-    private const TEMPLATE_PLAYLISTS = 'pages/playlists.html.twig';
-    private const TEMPLATE_PLAYLIST = 'pages/playlist.html.twig';
-    
-    /**
+     /**
      * 
      * @var PlaylistRepository
      */
@@ -35,7 +32,12 @@ class PlaylistsController extends AbstractController {
      * 
      * @var CategorieRepository
      */
-    private $categorieRepository;    
+    private $categorieRepository;  
+    
+    private const TEMPLATE_PLAYLISTS = "pages/playlists.html.twig";
+    private const TEMPLATE_PLAYLIST = "pages/playlist.html.twig";
+    
+    
     
     function __construct(PlaylistRepository $playlistRepository, 
             CategorieRepository $categorieRepository,
@@ -65,13 +67,14 @@ class PlaylistsController extends AbstractController {
             case "name":
                 $playlists = $this->playlistRepository->findAllOrderByName($ordre);
                 break;
-             case "formations_count":
-            $playlists = $this->playlistRepository->findAllOrderByNbFormations($ordre);
+            case "formationCount":  
+            $playlists = $this->playlistRepository->findAllWithFormationCount($ordre);
             break;
-            default:
+             default:
+                
                 $playlists = $this->playlistRepository->findAllOrderByName('ASC');
-            break;
-    }
+                break;
+        }
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::TEMPLATE_PLAYLISTS, [
             'playlists' => $playlists,
@@ -95,13 +98,15 @@ class PlaylistsController extends AbstractController {
     #[Route('/playlists/playlist/{id}', name: 'playlists.showone')]
     public function showOne($id): Response{
         $playlist = $this->playlistRepository->find($id);
+        $formationCount = $playlist->getFormations()->count();
         $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
         $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
         return $this->render(self::TEMPLATE_PLAYLIST, [
             'playlist' => $playlist,
             'playlistcategories' => $playlistCategories,
-            'playlistformations' => $playlistFormations
+            'playlistformations' => $playlistFormations,
+            'formationCount' => $formationCount
         ]);        
-    }  
+    }       
     
 }

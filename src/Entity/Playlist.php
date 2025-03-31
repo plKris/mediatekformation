@@ -83,8 +83,7 @@ class Playlist
     public function removeFormation(Formation $formation): static
     {
         if ($this->formations->removeElement($formation) && $formation->getPlaylist() === $this) {
-                $formation->setPlaylist(null);
-            
+        $formation->setPlaylist(null);
         }
 
         return $this;
@@ -96,14 +95,19 @@ class Playlist
     public function getCategoriesPlaylist() : Collection
     {
         $categories = new ArrayCollection();
-    foreach ($this->formations as $formation) {
-        $categoriesFormation = $formation->getCategories();
-        foreach ($categoriesFormation as $categorieFormation) {
-            if (!$categories->contains($categorieFormation->getName())) {
-                $categories[] = $categorieFormation->getName();
+        foreach($this->formations as $formation){
+            $categoriesFormation = $formation->getCategories();
+            foreach($categoriesFormation as $categorieFormation){
+                if(!$categories->contains($categorieFormation->getName())){
+                  $categories[] = $categorieFormation->getName();
+                }
             }
         }
+        return $categories;
     }
-    return $categories;
-}
+    public function getFormationCount(): int
+   {
+        return $this->formations->count();
+   }
+        
 }

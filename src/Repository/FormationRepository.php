@@ -11,17 +11,31 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FormationRepository extends ServiceEntityRepository
 {
+    /**
+     * 
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Formation::class);
     }
 
+    /**
+     * 
+     * @param Formation $entity
+     * @return void
+     */
     public function add(Formation $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * 
+     * @param Formation $entity
+     * @return void
+     */
     public function remove(Formation $entity): void
     {
         $this->getEntityManager()->remove($entity);
@@ -46,7 +60,7 @@ class FormationRepository extends ServiceEntityRepository
                     ->join('f.'.$table, 't')
                     ->orderBy('t.'.$champ, $ordre)
                     ->getQuery()
-                    ->getResult();         
+                    ->getResult();            
         }
     }
 
@@ -68,10 +82,10 @@ class FormationRepository extends ServiceEntityRepository
                     ->orderBy('f.publishedAt', 'DESC')
                     ->setParameter('valeur', '%'.$valeur.'%')
                     ->getQuery()
-                    ->getResult();          
+                    ->getResult();            
         }else{
             return $this->createQueryBuilder('f')
-                    ->join('f.'.$table, 't')                   
+                    ->join('f.'.$table, 't')                    
                     ->where('t.'.$champ.' LIKE :valeur')
                     ->orderBy('f.publishedAt', 'DESC')
                     ->setParameter('valeur', '%'.$valeur.'%')
@@ -108,4 +122,5 @@ class FormationRepository extends ServiceEntityRepository
                 ->getResult();        
     }
     
-    }
+    
+}

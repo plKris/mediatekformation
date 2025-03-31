@@ -16,12 +16,22 @@ class PlaylistRepository extends ServiceEntityRepository
         parent::__construct($registry, Playlist::class);
     }
 
+    /**
+     * 
+     * @param Playlist $entity
+     * @return void
+     */
     public function add(Playlist $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * 
+     * @param Playlist $entity
+     * @return void
+     */
     public function remove(Playlist $entity): void
     {
         $this->getEntityManager()->remove($entity);
@@ -38,7 +48,7 @@ class PlaylistRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
                 ->leftjoin('p.formations', 'f')
                 ->groupBy('p.id')
-                ->orderBy('p.name', $ordre)
+                ->orderBy('COUNT(f.id)', $ordre)
                 ->getQuery()
                 ->getResult();       
     } 
@@ -57,6 +67,7 @@ class PlaylistRepository extends ServiceEntityRepository
         }    
         if($table==""){      
             return $this->createQueryBuilder('p')
+                    ->select('p', 'COUNT(f.id) as formationCOUNT')
                     ->leftjoin('p.formations', 'f')
                     ->where('p.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
@@ -76,18 +87,16 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->getResult();              
         }           
     }
-    /**
-     * 
-     * @param type $ordre
-     * @return array
-     */
-    public function findAllOrderByNbFormations($ordre): array{
-    return $this->createQueryBuilder('p')
-            ->leftjoin('p.formations', 'f')
-            ->groupBy('p.id')
-            ->orderBy('COUNT(f.id)', $ordre)
-            ->getQuery()
-            ->getResult();       
-}
 
-} 
+    public function findAllWithFormationCount($orderBy = 'ASC'): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p, COUNT(f.id) as formationCount')
+            ->leftJoin('p.formations', 'f')
+            ->groupBy('p.id')
+            ->orderBy('formationCount', $orderBy)
+            ->getQuery()
+            ->getResult();
+    }      
+    
+}

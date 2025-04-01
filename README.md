@@ -11,7 +11,8 @@ Ce site, développé avec Symfony 5.4, permet d'accéder aux vidéos d'auto-form
 ## Les différentes pages
 
 ### Page n°1: Les playlists - Front-office
-![image](![image](https://github.com/user-attachments/assets/d98f7536-cacc-4092-b5cd-05c896dce0d4)
+![image](https://github.com/user-attachments/assets/0aa34cf8-c25b-4e4a-bbf7-45db409cda48)
+)
 )<br>
 Cette page était déjà codée (cf: <a href="https://github.com/CNED-SLAM/mediatekformation">dépôt Github<a/>). Une colonne recensant le nombre de formations par playlist a été ajoutée ainsi que des boutons permettant de faire un tri par ordre croissant ou décroissant.<br>
 

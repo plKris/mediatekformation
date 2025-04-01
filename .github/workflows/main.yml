@@ -1,17 +1,22 @@
-on: push
-name: Deploy website on push
-jobs:
- web-deploy:
- name: Deploy
- runs-on: ubuntu-latest
- steps:
- - name: Get latest code
- uses: actions/checkout@v2
+on: 
+  push:
+    branches:
+      - main 
 
- - name: Sync files
- uses: SamKirkland/FTP-Deploy-Action@4.3.0
- with:
- server: ftp.cluster021.hosting.ovh.net
- server-dir: /www/mediatekformation/
- username: pleseli
- password: ${{ secrets.ftp_password }}
+name: Deploy website on push
+
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v2
+
+      - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ftp.cluster021.hosting.ovh.net
+          server-dir: /www/mediatekformation/ 
+          username: pleseli
+          password: ${{ secrets.ftp_password }}

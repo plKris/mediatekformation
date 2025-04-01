@@ -32,7 +32,7 @@ d'administration du site. Au dessus du tableau, juste sous le menu de navigation
 Cette page s'affiche lorsque l'administrateur clique sur le bouton ajouter une formation. Elle contient le même header et le même footer que le reste du back-office, un titre a été ajouté. Il y a un formulaire vide avec à gauche le champ pour l'id de la vidéo Youtube de la formation et à droite les champs pour la date, le titre, la playlist, la catégorie et la description de la formation. Seules la description et la catégorie ne sont pas obligatoires. La date est sous forme de DateTimePicker et doit être antérieure à la date du jour. Un bouton enregistrer permet de soumettre le formulaire.
 
 ### Page n°5: Modifier une formation
-![image]!(https://github.com/user-attachments/assets/ba457a18-582f-452e-810f-8ca7924f6f51)
+![image](https://github.com/user-attachments/assets/ba457a18-582f-452e-810f-8ca7924f6f51)
 )
 Cette page s'affiche lorsque l'administrateur clique sur le bouton éditer une formation. Elle est similaire à la page d'ajout d'une formation mais le formulaire est pré-rempli avec les informations de la formation que l'utilisateur a sélectionnée. Sous le titre, on retrouve la vidéo Youtube de la formation.
 

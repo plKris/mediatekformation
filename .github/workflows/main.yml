@@ -12,6 +12,6 @@ jobs:
  uses: SamKirkland/FTP-Deploy-Action@4.3.0
  with:
  server: ftp.cluster021.hosting.ovh.net
- server-dir: root/www/mediatekformation/
+ server-dir: /www/mediatekformation/
  username: pleseli
  password: ${{ secrets.ftp_password }}

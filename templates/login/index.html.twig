@@ -13,6 +13,10 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="_password"
                class="form-control" required />
+
+        <label for="password">Animal préféré:</label>
+        <input type="text" id="animal" name="_animal"
+               class="form-control" required />
         
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         <br />

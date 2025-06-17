@@ -38,4 +38,9 @@ class AccueilController extends AbstractController{
     public function cgu(): Response{
         return $this->render("pages/cgu.html.twig");
     }
+
+     #[Route('/rgpd', name: 'rgpd')]
+    public function rgpd(): Response{
+        return $this->render("pages/rgpd.html.twig");
+    }
 }
